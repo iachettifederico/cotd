@@ -43,10 +43,18 @@ class Cuba
       res.write view("index", code: code, date: date)
     end
 
+    on ":y/:m/:d" do |year, month, day|
+      date = Date.new(year.to_i, month.to_i, day.to_i)
+      code = code_for(date)
+
+      res.write view("index", code: code, date: date)
+    end
+
     on "codes" do
       # codes = (1..10).map { ([hex_rand, hex_rand, hex_rand]).join }
-      codes = 1.upto(10).each_with_object({}) do |i, h|
-        date = Date.today + i
+      num = 1000
+      codes = 1.upto(num).each_with_object({}) do |i, h|
+        date = Date.today + i - (num/2)
         code = code_for(date)
         h[date] = code
       end
