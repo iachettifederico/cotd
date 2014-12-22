@@ -1,3 +1,4 @@
+ruby "2.1.5"
 source "https://rubygems.org"
 
 gem "thin", "~> 1.6.3"
