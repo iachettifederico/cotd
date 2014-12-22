@@ -28,7 +28,12 @@ def code_for(date)
   arr.join
 end
 
+
 class Cuba
+  def permalink_for(date)
+    "#{req.env["rack.url_scheme"]}://#{req.env["HTTP_HOST"]}/#{date.year}/#{date.month}/#{date.day}"
+  end
+
   def page_not_found
     res.status = 404
     res.headers["Content-Type"] = "text/html; charset=utf-8"
