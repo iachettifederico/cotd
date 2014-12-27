@@ -2,6 +2,19 @@ require "cuba"
 require "cuba/render"
 require "time"
 
+def ordinalize(int)
+  if (11..13).include?(int % 100)
+    "#{int}th"
+  else
+    case int % 10
+    when 1; "#{int}st"
+    when 2; "#{int}nd"
+    when 3; "#{int}rd"
+    else    "#{int}th"
+    end
+  end
+end
+
 Cuba.plugin Cuba::Render
 Cuba.settings[:render][:template_engine] = "haml"
 
@@ -29,6 +42,7 @@ def code_for(date)
 end
 
 
+
 class Cuba
   def permalink_for(date)
     "#{req.env["rack.url_scheme"]}://#{req.env["HTTP_HOST"]}/#{date.year}/#{date.month}/#{date.day}"
@@ -38,6 +52,16 @@ class Cuba
     res.status = 404
     res.headers["Content-Type"] = "text/html; charset=utf-8"
     res.write view("shared/404")
+  end
+
+  def style_for(code)
+    template = open("views/templates/style.scss").read % {code: code}
+
+    IO.popen("sass -s --compass --scss --trace", "w+") do |pipe|
+      pipe.puts template
+      pipe.close_write
+      pipe.read
+    end
   end
 
   self.define do
@@ -67,6 +91,20 @@ class Cuba
       res.write view("codes", codes: codes)
     end
 
+    on "style" do
+      begin
+        code = code_for(Date.today)
+
+        res.write style_for(code)
+      rescue Exception => e
+        res.write e.stack_trace
+      end
+    end
+
+    on "force_code/:code" do |code|
+      res.write view("index", code: code, date: Date.today)
+    end
+    
     on default do
       page_not_found
     end
