@@ -1,5 +1,31 @@
-%ul
-  - codes.each do |date, code|
-    %li
-      %code(style="color: ##{code}; background-color: #ffffff; padding: 5px;")= date
-      %code(style="color: ##{code}; background-color: #000000; padding: 5px;")= date
+:css
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 2px;
+  }
+%table.table
+  %thead
+    %tr
+      %th Code
+      %th Date
+      %th Brightness
+      %th Permalink
+  %tbody
+    - colors.each do |color|
+      %tr
+        %td
+          %code(style="color: #{color}; background-color: #ffffff; padding: 5px;")= color
+          %code(style="color: #{color}; background-color: #000000; padding: 5px;")= color
+        %td= color.date
+        %td= color.brightness
+        %td
+          %a(href="permalink_for(color.date)")= permalink_for(color.date)
+
+
+- #%ul
+- #  - colors.each do |color|
+- #    %li
+- #      %code(style="color: ##{color.code}; background-color: #ffffff; padding: 5px;")= color.date
+- #      %code(style="color: ##{color.code}; background-color: #000000; padding: 5px;")= color.date
+- #      %code Brightness: #{color.brightness}

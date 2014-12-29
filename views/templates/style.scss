@@ -1,65 +1,83 @@
 $main-color: #%{code};
-$background-color: #ffffff;
-$code-background: #ffffff;
-$code-border: 2px solid #000000;
-@if(lightness($main-color) < 50) {
-  $background-color: adjust-lightness($main-color, 70);
-  $code-border: 2px solid #000000;
-  $code-background: #ffffff;
-} @else {
-  $background-color: shade($main-color, 80);
-  $code-border: 2px solid #ffffff;
-  $code-background: #000000;
-}
 
-@import "compass/css3/border-radius";
+/* Imports */
+@import "susy";
+
+/* Global Settings */
+$susy: (
+  columns: 12,
+  gutters: 1/4,
+  gutter-position: inside,
+);
+
+$widelayout: (
+  columns: 24,
+  gutters: 1/4,
+  gutter-position: inside,
+);
+
+//@include layout($widelayout);
+
+
+
+/* Contents */
 
 body {
-  color: $main-color;
-  background-color: $background-color;
-}
-
-.code {
-  background-color: $code-background;
-  border: $code-border;
-  padding: 10px;
-  @include border-radius(5px);
+  background-color: #eee;
+  @include container(80%%);
 }
 
 a {
- color: $main-color;
- text-decoration: none;
- font-weight: bold;
+  color: $main-color;
+  text-decoration: none;
 }
 
-.btn-group {
-  margin: 5px;
-  color: $main-color;
+.previous-day {
+  float:left;
+  width:110px;
+  text-align: left;
+}
+
+.next-day {
+  float:right;
+  width:200px;
+  text-align: right;
+}
+
+.today {
+  display: inline-block;
+  margin:0 auto;
+  width:150px;
+  text-align: center;
+}
+
+ul.nav {
+  padding: 0;
+  li {
+    list-style: none;
+    margin: 0;
+  }
   a {
-    text-decoration: none;
-    @include border-radius(5px);
-    border: 2px solid shade($main-color, 20);
-    background-color: adjust-lightness($background-color, -10);
-    padding: 5px;
-    margin: 3px;
-    &:hover {
-      background-color: adjust-lightness($background-color, -5);
-    }
+    display: block;
+    padding: 10px 5%%;
+    border-bottom: 1px solid #95a5a6;
   }
 }
 
-@if(lightness($main-color) < 50) {
-  h1 { color: adjust-lightness($main-color, 5); }
-  h2 { color: adjust-lightness($main-color, 10); }
-  h3 { color: adjust-lightness($main-color, 15); }
-  h4 { color: adjust-lightness($main-color, 20); }
-  h5 { color: adjust-lightness($main-color, 25); }
-  h6 { color: adjust-lightness($main-color, 30); }
-} @else {
-  h1 { color: shade($main-color, 5); }
-  h2 { color: shade($main-color, 10); }
-  h3 { color: shade($main-color, 15); }
-  h4 { color: shade($main-color, 20); }
-  h5 { color: shade($main-color, 25); }
-  h6 { color: shade($main-color, 30); }
+#header {
+  color: $main-color;
+}
+
+#top-nav {
+    width:100%%;
+    text-align:center;
+  @include container(90%%);
+}
+
+#content {
+  @include span(9);
+}
+
+#ads {
+  @include span(3 at 10);
 }

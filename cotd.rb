@@ -1,6 +1,10 @@
+
 require "cuba"
 require "cuba/render"
 require "time"
+require "susy"
+
+require "./models/color"
 
 def ordinalize(int)
   if (11..13).include?(int % 100)
@@ -17,31 +21,6 @@ end
 
 Cuba.plugin Cuba::Render
 Cuba.settings[:render][:template_engine] = "haml"
-
-def hex_rand
-  n = rand(256)
-  "%02X" % n
-end
-
-def to_hex(int)
-  n = int % 256
-  "%02X" % n
-end
-
-def code_for(date)
-  arr = [
-    to_hex(date.day * date.month + date.year),
-    to_hex(date.year - date.day * date.month),
-    to_hex(date.day * date.month * date.year),
-  ]
-  shift = date.day % 3
-  shift.times do
-    arr.push(arr.shift)
-  end
-  arr.join
-end
-
-
 
 class Cuba
   def permalink_for(date)
@@ -67,28 +46,36 @@ class Cuba
   self.define do
     on root do
       date = Date.today
-      code = code_for(date)
+      color = Color.new(date)
 
-      res.write view("index", code: code, date: date)
+      res.write view("index", color: color)
     end
 
     on ":y/:m/:d" do |year, month, day|
       date = Date.new(year.to_i, month.to_i, day.to_i)
-      code = code_for(date)
+      color = Color.new(date)
 
-      res.write view("index", code: code, date: date)
+      res.write view("index", color: color)
     end
 
     on "codes" do
-      # codes = (1..10).map { ([hex_rand, hex_rand, hex_rand]).join }
       num = 1000
-      codes = 1.upto(num).each_with_object({}) do |i, h|
+      colors = 1.upto(num).map { |i|
         date = Date.today + i - (num/2)
-        code = code_for(date)
-        h[date] = code
-      end
+        Color.new(date)
+      }
 
-      res.write view("codes", codes: codes)
+      res.write view("codes", colors: colors)
+    end
+
+    on "brightness" do
+      num = 1000
+      colors = 1.upto(num).map { |i|
+        date = Date.today + i - (num/2)
+        Color.new(date)
+      }.sort_by(&:brightness)
+
+      res.write view("codes", colors: colors)
     end
 
     on "style" do
@@ -102,9 +89,9 @@ class Cuba
     end
 
     on "force_code/:code" do |code|
-      res.write view("index", code: code, date: Date.today)
+      res.write view("index", color: Color.force_code(code))
     end
-    
+
     on default do
       page_not_found
     end

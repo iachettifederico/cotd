@@ -1,20 +1,31 @@
 :css
-  #{style_for(code)}
+  #{style_for(color.code)}
 
-%h2
-  Color for #{date.strftime("%A %B #{ordinalize(date.day)}")}
-%h1
-  %code.code ##{code}
+#header
+  %h2
+    Color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")}
+  %h1
+    %code.code ##{color.code} | #{color.brightness}
 
-.btn-group
-  %a.button(href="#{permalink_for(date - 1)}")
-    Previous Day
-  %a.button(href="/")
-    Today
-  %a.button(href="#{permalink_for(date + 1)}")
-    Next Day
+#top-nav
+  .btn-group
+    %a.button.previous-day(href="#{permalink_for(color.date - 1)}")
+      << Previous Day
+    %a.button.today(href="/")
+      Today
+    %a.button.next-day(href="#{permalink_for(color.date + 1)}")
+      Next Day >>
 
-%h4
-  Permalink:
-  %a(href="#{permalink_for(date)}")
-    = permalink_for(date)
+#side-nav
+  - # nothing here
+
+#content
+  %p
+    You can come back to this color using the permalink:
+    %a(href="#{permalink_for(color.date)}")
+      = permalink_for(color.date)
+ 
+#ads
+  The ADS
+
+
