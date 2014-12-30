@@ -5,9 +5,9 @@
   %h2
     Color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")}
   %h1
-    %code.code ##{color.code} | #{color.brightness}
+    %code.code ##{color.code}
 
-#top-nav
+.nav
   .btn-group
     %a.button.previous-day(href="#{permalink_for(color.date - 1)}")
       << Previous Day
@@ -16,16 +16,63 @@
     %a.button.next-day(href="#{permalink_for(color.date + 1)}")
       Next Day >>
 
-#side-nav
-  - # nothing here
-
 #content
-  %p
-    You can come back to this color using the permalink:
+  %p.permalink
+    You can come back to this day using the permalink:
     %a(href="#{permalink_for(color.date)}")
       = permalink_for(color.date)
- 
+
+  .column
+    %h4 Welcome to color of the day!
+    %p On this site you'll find each day a different color for using as you please.
+    
+
+  .column
+    .col1
+      %h4 Why color of the day?
+      %p You don't know what to wear today?
+      %p You need a new design and don't know where to start?
+      %p You started a new relationship and want "Your color"?
+      %br
+      %p We give you one color a day and we use it for that day's design.
+      %p You can check any day, no matter if it's in the past, present or future.
+      %p You can always come back to a particular day and remind yourself of the color.
+      %br
+      %p You can use our site for all this things or choose you own use. We don't mind.
+    
+    .col2
+      %h4 Wanna know what color was ...
+      %ul
+        %li your birthday?
+        %li your children's or significant other's?
+        %li your anyversary?
+        %li this date last or next year?
+        %li tomorrow?
+        %li any other date?
+      %p
+        Check it out here:
+        %br
+        %small (if the date is invalid, you'll be redirected to today's color)
+      %form(action="/date" method="GET")
+        %label Date (DD / MM / YYYY):
+        %br
+        %input(type="number" name="day" value="#{color.date.day}" min="1" max="31")
+        \/
+        %input(type="number" name="month" value="#{color.date.month}" min="1" max="12")/
+        \/
+        %input(type="number" name="year" value="#{color.date.year}" min="1" max="9999")
+        %br
+        %input(type="submit" value="Check")
+  .column
+    .col1
+      %h4 How do we find a color?
+      %p
+        Color of the day is a purely recreational site.
+        The colors don't have a meaning unless you provide one.
+      %p
+        To find the color, we use a simple algorithm based on the date.
+        We just take the values of the day, month and year and mix them with a combination of arithmetic operations.
+      %p
+        Just that. No magic, no tricks, only math.
 #ads
-  The ADS
-
-
+  = partial("shared/ads")

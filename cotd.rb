@@ -2,7 +2,9 @@
 require "cuba"
 require "cuba/render"
 require "time"
+
 require "susy"
+require "breakpoint"
 
 require "./models/color"
 
@@ -51,11 +53,20 @@ class Cuba
       res.write view("index", color: color)
     end
 
-    on ":y/:m/:d" do |year, month, day|
-      date = Date.new(year.to_i, month.to_i, day.to_i)
-      color = Color.new(date)
+    on "date", param(:day), param(:month), param(:year) do |day, month, year|
+      path = [year, month, day].join("/")
+      res.redirect "/" + path
+    end
 
-      res.write view("index", color: color)
+    on ":y/:m/:d" do |year, month, day|
+      begin
+        date = Date.new(year.to_i, month.to_i, day.to_i)
+        color = Color.new(date)
+
+        res.write view("index", color: color)
+      rescue ArgumentError => e
+        res.redirect "/"
+      end
     end
 
     on "codes" do
@@ -80,11 +91,11 @@ class Cuba
 
     on "style" do
       begin
-        code = code_for(Date.today)
+        code = Color.new(Date.today).code
 
         res.write style_for(code)
       rescue Exception => e
-        res.write e.stack_trace
+        res.write e.backtrace.join("<br>")
       end
     end
 

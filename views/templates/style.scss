@@ -2,53 +2,17 @@ $main-color: #%{code};
 
 /* Imports */
 @import "susy";
+@import "breakpoint";
 
-/* Global Settings */
+/* Global settings*/
 $susy: (
-  columns: 12,
-  gutters: 1/4,
+  gutters: 1/2,
   gutter-position: inside,
 );
-
-$widelayout: (
-  columns: 24,
-  gutters: 1/4,
-  gutter-position: inside,
-);
-
-//@include layout($widelayout);
-
-
-
-/* Contents */
-
-body {
-  background-color: #eee;
-  @include container(80%%);
-}
 
 a {
   color: $main-color;
   text-decoration: none;
-}
-
-.previous-day {
-  float:left;
-  width:110px;
-  text-align: left;
-}
-
-.next-day {
-  float:right;
-  width:200px;
-  text-align: right;
-}
-
-.today {
-  display: inline-block;
-  margin:0 auto;
-  width:150px;
-  text-align: center;
 }
 
 ul.nav {
@@ -64,20 +28,129 @@ ul.nav {
   }
 }
 
+
 #header {
   color: $main-color;
 }
 
-#top-nav {
-    width:100%%;
+@include breakpoint(0px) {
+  @include layout(1);
+
+  body {
+    @include container(95%%);
+  }
+  
+  #header {
+    text-align: center;
+  }
+  
+  .nav {
+    .button {
+      background-color: #909090;
+      &:hover {
+        background-color: #ABABAB;
+      }
+    }
+    
+    .previous-day {
+      float:left;
+      width:100%%;
+      text-align: center;
+      padding: 10px;
+    }
+    
+    .next-day {
+      float:left;
+      width:100%%;
+      text-align: center;
+      padding: 10px;
+    }
+    
+    .today {
+      float:left;
+      width:100%%;
+      text-align: center;
+      padding: 10px;
+    }
+
+  }
+  
+}
+
+
+/*********************************************************************************/
+
+
+@include breakpoint(800px) {
+  @include layout(12);
+
+  body {
+    @include container(90%%);
+  }
+
+  #header {
+  }
+  
+  .nav {
+    @include container(80%%);
     text-align:center;
-  @include container(90%%);
-}
+    width: 100%%;
+    .button {
+      background-color: hsla(0,0,0,0);
+      &:hover{
+        background-color: hsla(0,0,0,0);
+      }
+    }
+    .previous-day {
+      float:left;
+      width:110px;
+      text-align: center;
+    }
+    
+    .next-day {
+      float:right;
+      width:200px;
+      text-align: right;
+    }
+    
+    .today {
+      display: inline-block;
+      margin:0 auto;
+      width:150px;
+      text-align: center;
+      float: none;
+    }
+  }
+  
+  #content {
+    @include span(9);
+  }
 
-#content {
-  @include span(9);
-}
+  .permalink {
+    text-align: center;
+  }
+  
+  .column {
+    @include container(100%%);
+    text-align: justify;
+    margin-top: 15px;
+    //margin-bottom: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f1f1;
+  }
+  
+  .col1 {
+    @include span(6 at 1);
+    border-right: 1px solid #f1f1f1;
+  }
 
-#ads {
-  @include span(3 at 10);
+  .col2 {
+    @include span(6 at 7);
+  }
+
+  #ads {
+    @include span(3 at 10);
+  }
+
 }
