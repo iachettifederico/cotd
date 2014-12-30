@@ -6,8 +6,6 @@
     Your color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")} is:
   %code.code
     = color
-    |
-    = color.brightness
 .nav
   .btn-group
     %a.button.previous-day(href="#{permalink_for(color.date - 1)}")
@@ -75,5 +73,7 @@
         We just take the values of the day, month and year and mix them with a combination of arithmetic operations.
       %p
         Just that. No magic, no tricks, only math.
+
+    
 #ads
   = partial("shared/ads")
