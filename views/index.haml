@@ -3,9 +3,11 @@
 
 #header
   %h2
-    Color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")}
-  %h1
-    %code.code ##{color.code}
+    Your color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")} is:
+  %code.code
+    = color
+    |
+    = color.brightness
 .nav
   .btn-group
     %a.button.previous-day(href="#{permalink_for(color.date - 1)}")

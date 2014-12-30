@@ -36,7 +36,9 @@ class Cuba
   end
 
   def style_for(color)
-    template = open("views/templates/style.scss").read % {code: color.code, brightness: color.brightness}
+    template_name = color.brightness < 50 ? "style" : "style_dark"
+
+    template = open("views/templates/#{template_name}.scss").read % {code: color.code, brightness: color.brightness}
 
     IO.popen("sass -s --compass --scss --trace", "w+") do |pipe|
       pipe.puts template
@@ -49,7 +51,6 @@ class Cuba
     on root do
       date = Date.today
       color = Color.new(date)
-
       res.write view("index", color: color)
     end
 
@@ -101,7 +102,7 @@ class Cuba
     end
 
     on "force_code/:code" do |code|
-      res.write view("index", color: Color.force_code(code))
+      res.write view("index", color: Color.for_code(code))
     end
 
     on default do
