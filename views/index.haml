@@ -1,12 +1,11 @@
 :css
-  #{style_for(color.code)}
+  #{style_for(color)}
 
 #header
   %h2
     Color for #{color.date.strftime("%A %B #{ordinalize(color.date.day)}")}
   %h1
     %code.code ##{color.code}
-
 .nav
   .btn-group
     %a.button.previous-day(href="#{permalink_for(color.date - 1)}")

@@ -1,10 +1,16 @@
-$main-color: #%{code};
 
 /* Imports */
 @import "susy";
 @import "breakpoint";
 
 /* Global settings*/
+$main-color: #%{code};
+$background-color: #ffffff;
+
+@if(%{brightness} > 50) {
+  $background-color: #111111;
+}
+
 $susy: (
   gutters: 1/2,
   gutter-position: inside,
@@ -28,6 +34,10 @@ ul.nav {
   }
 }
 
+body{
+  color: $main-color;
+  background-color: $background-color;
+}
 
 #header {
   color: $main-color;

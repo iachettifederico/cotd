@@ -35,8 +35,8 @@ class Cuba
     res.write view("shared/404")
   end
 
-  def style_for(code)
-    template = open("views/templates/style.scss").read % {code: code}
+  def style_for(color)
+    template = open("views/templates/style.scss").read % {code: color.code, brightness: color.brightness}
 
     IO.popen("sass -s --compass --scss --trace", "w+") do |pipe|
       pipe.puts template
@@ -91,11 +91,12 @@ class Cuba
 
     on "style" do
       begin
-        code = Color.new(Date.today).code
+        color = Color.new(Date.today)
 
-        res.write style_for(code)
+        res.write style_for(color)
       rescue Exception => e
-        res.write e.backtrace.join("<br>")
+        res.write e.message
+        res.write e.backtrace.join("<br> ")
       end
     end
 
